@@ -1,0 +1,367 @@
+<html>
+<head>
+<title>Razer</title>
+<HTA:APPLICATION ID="Razer" APPLICATIONNAME="Razer" BORDER="thin" BORDERSTYLE="normal" CAPTION="yes" ICON="" MAXIMIZEBUTTON="yes" MINIMIZEBUTTON="yes" SHOWINTASKBAR="yes" SINGLEINSTANCE="yes" SYSMENU="yes" WINDOWSTATE="normal" SCROLL="no"/>
+<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080808;color:#e0e0e0;font-family:Segoe UI,sans-serif;font-size:13px;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+.header{background:#0a0a0a;border-bottom:1px solid #161616;padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:700;font-size:13px;letter-spacing:3px;color:#cc0000}
+.ver{font-size:10px;color:#333;margin-left:8px}
+.tabs{display:flex;background:#090909;border-bottom:1px solid #1a1a1a}
+.tab{padding:10px 20px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#555;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer}
+.tab:hover{color:#999}
+.tab.active{color:#fff;border-bottom-color:#cc0000}
+.content{flex:1;overflow-y:auto;padding:20px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+.section{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#cc0000;border-bottom:1px solid #1a1a1a;padding-bottom:6px;margin-bottom:16px}
+.row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.row label{width:140px;font-size:12px;color:#888;flex-shrink:0}
+select{background:#141414;border:1px solid #252525;color:#e0e0e0;border-radius:4px;padding:5px 8px;font-size:12px;cursor:pointer;outline:none}
+select:hover{border-color:#333}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:#252525;outline:none;cursor:pointer;flex:1}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#cc0000;border:2px solid #ff3333;cursor:pointer}
+input[type=number]{background:#141414;border:1px solid #252525;color:#e0e0e0;border-radius:4px;padding:4px;font-size:12px;width:60px;text-align:center;outline:none;font-family:Consolas}
+input[type=number]:focus{border-color:#cc0000}
+.algo-btn{padding:5px 14px;font-size:11px;font-weight:600;border:1px solid #252525;background:#141414;color:#555;border-radius:4px;cursor:pointer;margin-right:6px}
+.algo-btn.active{background:rgba(204,0,0,0.15);border-color:#cc0000;color:#cc0000}
+.toggle{position:relative;width:40px;height:22px;display:inline-block}
+.toggle input{opacity:0;width:0;height:0}
+.toggle span{position:absolute;inset:0;background:#333;border-radius:22px;cursor:pointer;transition:.2s}
+.toggle span:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#666;border-radius:50%;transition:.2s}
+.toggle input:checked+span{background:rgba(204,0,0,0.3);border:1px solid #cc0000}
+.toggle input:checked+span:before{transform:translateX(18px);background:#cc0000}
+.card{background:#0d0d0d;border:1px solid #1a1a1a;border-radius:6px;padding:12px 16px;margin-top:16px}
+.card-label{font-size:9px;color:#444;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.card-val{font-size:18px;font-weight:700;color:#cc0000;font-family:Consolas}
+.cards{display:flex;gap:10px}
+.cards>div{flex:1}
+.bottom{background:#090909;border-top:1px solid #1a1a1a;padding:10px 16px;display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.btn-save{background:linear-gradient(135deg,#cc0000,#990000);color:#fff;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:9px 28px;border:none;border-radius:5px;cursor:pointer}
+.btn-save:hover{background:linear-gradient(135deg,#ee0000,#bb0000)}
+.bind-btn{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;background:none;border:1px solid #252525;color:#555;border-radius:4px;cursor:pointer}
+.bind-btn:hover{border-color:#cc0000;color:#cc0000}
+.bind-btn.listening{border-color:#ffaa00;color:#ffaa00}
+.key-display{padding:4px 12px;min-width:70px;text-align:center;background:#0d0d0d;border:1px solid #1e1e1e;border-radius:4px;font-family:Consolas;font-size:12px;color:#aaa}
+.compat{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.compat div{font-size:11px;color:#555}
+.compat .ok{color:#00aa44;font-weight:700;margin-right:4px}
+input[type=color]{width:36px;height:28px;cursor:pointer;background:none;border:1px solid #252525;border-radius:4px;padding:2px}
+.color-preview{width:60px;height:22px;border-radius:4px;border:1px solid #252525}
+.saved{font-size:10px;color:#00aa44;font-weight:600;display:none}
+.warn{margin-top:12px;padding:10px 14px;background:rgba(204,0,0,0.05);border:1px solid rgba(204,0,0,0.15);border-radius:6px;font-size:11px;color:#664444}
+.overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center}
+.overlay-box{background:#111;border:1px solid #cc0000;border-radius:10px;padding:24px 40px;text-align:center}
+.overlay-box .t{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.overlay-box .b{font-size:11px;color:#cc0000;font-family:Consolas}
+.overlay-box .e{font-size:10px;color:#333;margin-top:10px}
+.swatch{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+.game-bar{background:#060606;border-bottom:1px solid #131313;padding:6px 16px;display:flex;align-items:center;justify-content:space-between}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-dot.off{background:#cc0000;box-shadow:0 0 6px rgba(204,0,0,0.5)}
+.status-dot.on{background:#00cc50;box-shadow:0 0 6px rgba(0,200,80,0.6);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.btn-activate{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 16px;border-radius:4px;cursor:pointer;border:1px solid #252525;background:transparent;color:#555}
+.btn-activate.ready{border-color:#00cc50;color:#00cc50;background:rgba(0,200,80,0.08)}
+.btn-activate.active{border-color:#00cc50;color:#fff;background:rgba(0,200,80,0.2);box-shadow:0 0 10px rgba(0,200,80,0.3)}
+.btn-activate:disabled{opacity:0.3;cursor:not-allowed}
+</style>
+</head>
+<body>
+<div class="header">
+  <div><span class="logo">RAZER</span><span class="ver">v1.0.0</span></div>
+  <div style="font-size:10px;color:#333">HVCI Compatible <span style="color:#00aa44">&#10003;</span></div>
+</div>
+<div class="game-bar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="display:flex;align-items:center"><span class="status-dot off" id="gameDot"></span><span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#555" id="gameLabel">VALORANT NOT DETECTED</span></div>
+    <span style="font-size:9px;color:#222">|</span>
+    <span style="font-size:10px;color:#333" id="aimbotState">AIMBOT: INACTIVE</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:9px;color:#333" id="scanInfo">Scanning...</span>
+    <button class="btn-activate" id="activateBtn" onclick="toggleActivate()" disabled>ACTIVATE</button>
+  </div>
+</div>
+<div class="tabs" id="tabs">
+  <button class="tab active" onclick="showTab(0)">AimBot Settings</button>
+  <button class="tab" onclick="showTab(1)">Trigger Settings</button>
+  <button class="tab" onclick="showTab(2)">Config Settings</button>
+  <button class="tab" onclick="showTab(3)">Other Settings</button>
+</div>
+<div class="content">
+<!-- Tab 0: AimBot -->
+<div id="t0">
+<div class="section">AimBot Settings</div>
+<div class="row">
+  <label>Enemy Highlight Color</label>
+  <span class="swatch" id="colorSwatch" style="background:#9400d3;box-shadow:0 0 8px #9400d366"></span>
+  <select id="enemyColor" onchange="updateSwatch()">
+    <option value="purple-tritanopia" selected>Purple (Tritanopia)</option>
+    <option value="purple">Purple</option><option value="red">Red</option>
+    <option value="yellow">Yellow</option><option value="green">Green</option>
+    <option value="blue">Blue</option><option value="cyan">Cyan</option>
+    <option value="pink">Pink</option><option value="orange">Orange</option>
+  </select>
+</div>
+<div class="row">
+  <label>Aim Target</label>
+  <select id="aimTarget"><option value="head" selected>Head</option><option value="upper">Upper Body</option><option value="body">Body</option><option value="lower">Lower Body</option><option value="feet">Feet</option></select>
+</div>
+<div class="row">
+  <label>Aim Algorithm</label>
+  <button class="algo-btn active" id="a4" onclick="setAlgo(4)">Algorithm 4</button>
+  <button class="algo-btn" id="a3" onclick="setAlgo(3)">Algorithm 3</button>
+  <button class="algo-btn" id="a2" onclick="setAlgo(2)">Algorithm 2</button>
+</div>
+<div style="border-top:1px solid #181818;margin:12px 0"></div>
+<div class="row"><label>Aim FOV</label><input type="range" min="10" max="500" value="100" id="aimFov" oninput="sync(this,'aimFovN')"><input type="number" min="10" max="500" value="100" id="aimFovN" oninput="sync(this,'aimFov')"></div>
+<div class="row"><label>Smoothing</label><input type="range" min="1" max="20" value="5" id="smooth" oninput="sync(this,'smoothN')"><input type="number" min="1" max="20" value="5" id="smoothN" oninput="sync(this,'smooth')"></div>
+<div class="row"><label>Sensitivity</label><input type="range" min="0.1" max="5" step="0.05" value="1" id="sens" oninput="sync(this,'sensN')"><input type="number" min="0.1" max="5" step="0.05" value="1.00" id="sensN" oninput="sync(this,'sens')"></div>
+<div class="row"><label>Aim Multiplier</label><input type="range" min="0.1" max="3" step="0.05" value="1" id="mult" oninput="sync(this,'multN')"><input type="number" min="0.1" max="3" step="0.05" value="1.00" id="multN" oninput="sync(this,'mult')"></div>
+<div class="row"><label>Recoil Length</label><input type="range" min="0" max="100" value="10" id="recoil" oninput="sync(this,'recoilN')"><input type="number" min="0" max="100" value="10" id="recoilN" oninput="sync(this,'recoil')"></div>
+<div class="row"><label>Head Offset X</label><input type="range" min="-50" max="50" value="0" id="offX" oninput="sync(this,'offXN')"><input type="number" min="-50" max="50" value="0" id="offXN" oninput="sync(this,'offX')"></div>
+<div class="row"><label>Head Offset Y</label><input type="range" min="0" max="100" value="20" id="offY" oninput="sync(this,'offYN')"><input type="number" min="0" max="100" value="20" id="offYN" oninput="sync(this,'offY')"></div>
+<div class="cards">
+  <div class="card"><div class="card-label">FOV Radius</div><div class="card-val" id="statFov">100px</div></div>
+  <div class="card"><div class="card-label">Smooth Steps</div><div class="card-val" id="statSmooth">5</div></div>
+  <div class="card"><div class="card-label">Effective Sens</div><div class="card-val" id="statSens">1.00</div></div>
+</div>
+</div>
+<!-- Tab 1: Trigger -->
+<div id="t1" style="display:none">
+<div class="section">Trigger Settings</div>
+<div class="row"><label>Trigger FOV</label><input type="range" min="1" max="200" value="10" id="trigFov" oninput="sync(this,'trigFovN')"><input type="number" min="1" max="200" value="10" id="trigFovN" oninput="sync(this,'trigFov')"></div>
+<div class="row"><label>Trigger Smoothing</label><input type="range" min="1" max="20" value="3" id="trigSmooth" oninput="sync(this,'trigSmoothN')"><input type="number" min="1" max="20" value="3" id="trigSmoothN" oninput="sync(this,'trigSmooth')"></div>
+<div class="row"><label>Delay Between Shots</label><input type="range" min="0" max="1000" step="10" value="100" id="delay" oninput="sync(this,'delayN')"><input type="number" min="0" max="1000" step="10" value="100" id="delayN" oninput="sync(this,'delay')"><span style="font-size:10px;color:#444;margin-left:2px">ms</span></div>
+<div class="card">
+  <div class="card-label">Trigger Info</div>
+  <div style="display:flex;gap:30px;margin-top:8px">
+    <div><div style="font-size:9px;color:#333;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">FOV Area</div><div class="card-val" id="trigArea" style="font-size:16px">20x20px</div></div>
+    <div><div style="font-size:9px;color:#333;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Fire Rate</div><div class="card-val" id="trigRate" style="font-size:16px">10 RPS</div></div>
+  </div>
+</div>
+<div class="warn">Warning: Trigger bot activates when enemy color detected within Trigger FOV. Set Delay >= 50ms to avoid detection.</div>
+</div>
+<!-- Tab 2: Config -->
+<div id="t2" style="display:none">
+<div class="section">Config Settings</div>
+<div style="margin-bottom:12px;padding:10px 14px;background:rgba(204,0,0,0.05);border:1px solid rgba(204,0,0,0.15);border-radius:6px;font-size:11px;color:#664444">GIU phim AimBot Key de tu dong aim vao dich. BUong ra de dung. Trigger Key giu de tu dong ban khi phat hien dich.</div>
+<div class="card" style="margin-top:0;padding:4px 16px">
+  <div class="row" style="border-bottom:1px solid #141414;padding:10px 0"><label style="width:180px">AimBot Key 1 (Hold)</label><select id="k1s" onchange="document.getElementById('k1d').innerText=this.value"><option>Mouse2</option><option>Mouse1</option><option>Mouse3</option><option>Mouse4</option><option>Mouse5</option><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F5</option><option>Shift</option><option>Ctrl</option><option>Alt</option></select><div class="key-display" id="k1d">Mouse2</div><button class="bind-btn" onclick="bindKey('k1d','k1s',this)">Click to Bind</button><span style="font-size:9px;color:#444;margin-left:6px">Giu de aim</span></div>
+  <div class="row" style="border-bottom:1px solid #141414;padding:10px 0"><label style="width:180px">AimBot Key 2 (Hold)</label><select id="k2s" onchange="document.getElementById('k2d').innerText=this.value"><option>None</option><option>Mouse1</option><option>Mouse2</option><option>Mouse3</option><option>Mouse4</option><option>Mouse5</option><option>F1</option><option>F2</option><option>Shift</option><option>Ctrl</option><option>Alt</option></select><div class="key-display" id="k2d">None</div><button class="bind-btn" onclick="bindKey('k2d','k2s',this)">Click to Bind</button><span style="font-size:9px;color:#444;margin-left:6px">Phim phu</span></div>
+  <div class="row" style="border-bottom:1px solid #141414;padding:10px 0"><label style="width:180px">Trigger Key (Hold)</label><select id="k3s" onchange="document.getElementById('k3d').innerText=this.value"><option>Mouse4</option><option>Mouse1</option><option>Mouse2</option><option>Mouse3</option><option>Mouse5</option><option>F1</option><option>F2</option><option>Shift</option><option>Ctrl</option></select><div class="key-display" id="k3d">Mouse4</div><button class="bind-btn" onclick="bindKey('k3d','k3s',this)">Click to Bind</button><span style="font-size:9px;color:#444;margin-left:6px">Giu de tu ban</span></div>
+  <div class="row" style="padding:10px 0"><label style="width:180px">Toggle Key (Press)</label><select id="k4s" onchange="document.getElementById('k4d').innerText=this.value"><option>F5</option><option>F1</option><option>F2</option><option>F3</option><option>F4</option><option>F6</option><option>F7</option><option>F8</option><option>F9</option><option>F10</option><option>F11</option><option>F12</option></select><div class="key-display" id="k4d">F5</div><button class="bind-btn" onclick="bindKey('k4d','k4s',this)">Click to Bind</button><span style="font-size:9px;color:#444;margin-left:6px">Bat/tat</span></div>
+</div>
+</div>
+<!-- Tab 3: Other -->
+<div id="t3" style="display:none">
+<div class="section">Other Settings</div>
+<div class="card" style="margin-top:0;padding:0 16px">
+  <div class="row" style="justify-content:space-between;border-bottom:1px solid #141414;padding:12px 0"><div><div style="font-size:13px;color:#ccc;font-weight:500">Always On</div><div style="font-size:11px;color:#444;margin-top:2px">Aimbot active without holding key</div></div><label class="toggle"><input type="checkbox" id="alwaysOn"><span></span></label></div>
+  <div class="row" style="justify-content:space-between;padding:12px 0"><div><div style="font-size:13px;color:#ccc;font-weight:500">Dark Mode</div><div style="font-size:11px;color:#444;margin-top:2px">Dark interface theme</div></div><label class="toggle"><input type="checkbox" id="darkMode" checked><span></span></label></div>
+</div>
+<div class="section" style="margin-top:20px">Theme Colors</div>
+<div class="card" style="margin-top:0;padding:0 16px">
+  <div class="row" style="justify-content:space-between;border-bottom:1px solid #141414;padding:8px 0"><span style="font-size:12px;color:#888">Primary</span><div style="display:flex;align-items:center;gap:8px"><div class="color-preview" style="background:#cc0000"></div><input type="color" value="#cc0000"><span style="font-family:Consolas;font-size:11px;color:#555">#cc0000</span></div></div>
+  <div class="row" style="justify-content:space-between;border-bottom:1px solid #141414;padding:8px 0"><span style="font-size:12px;color:#888">Secondary</span><div style="display:flex;align-items:center;gap:8px"><div class="color-preview" style="background:#1a1a1a"></div><input type="color" value="#1a1a1a"><span style="font-family:Consolas;font-size:11px;color:#555">#1a1a1a</span></div></div>
+  <div class="row" style="justify-content:space-between;border-bottom:1px solid #141414;padding:8px 0"><span style="font-size:12px;color:#888">Accent</span><div style="display:flex;align-items:center;gap:8px"><div class="color-preview" style="background:#ff4444"></div><input type="color" value="#ff4444"><span style="font-family:Consolas;font-size:11px;color:#555">#ff4444</span></div></div>
+  <div class="row" style="justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:#888">Background</span><div style="display:flex;align-items:center;gap:8px"><div class="color-preview" style="background:#080808"></div><input type="color" value="#080808"><span style="font-family:Consolas;font-size:11px;color:#555">#080808</span></div></div>
+</div>
+<div class="section" style="margin-top:20px">Compatibility</div>
+<div class="card" style="margin-top:0">
+  <div class="compat">
+    <div><span class="ok">&#10003;</span>HVCI ON/OFF</div><div><span class="ok">&#10003;</span>All Motherboards</div>
+    <div><span class="ok">&#10003;</span>AMD CPU</div><div><span class="ok">&#10003;</span>Intel CPU</div>
+    <div><span class="ok">&#10003;</span>AMD GPU</div><div><span class="ok">&#10003;</span>NVIDIA GPU</div>
+    <div><span class="ok">&#10003;</span>Windows 10</div><div><span class="ok">&#10003;</span>Windows 11 22H2+</div>
+  </div>
+</div>
+</div>
+</div>
+<div class="bottom">
+  <span class="saved" id="savedMsg">&#10003; SAVED</span>
+  <button class="btn-save" onclick="saveConfig()">Update Configuration</button>
+</div>
+<div id="bindOverlay" class="overlay" style="display:none">
+  <div class="overlay-box">
+    <div class="t">Press any key or mouse button</div>
+    <div class="b" id="bindLabel">Binding: Key</div>
+    <div class="e">ESC to cancel</div>
+  </div>
+</div>
+<script>
+var cfg={algorithm:4};
+var gameDetected=false;
+var aimbotActive=false;
+var engineProc=null;
+
+function showTab(n){for(var i=0;i<4;i++){document.getElementById('t'+i).style.display=i==n?'':'none';document.getElementById('tabs').children[i].className=i==n?'tab active':'tab'}}
+function sync(src,tgt){var el=document.getElementById(tgt);el.value=src.value;updateStats()}
+function setAlgo(n){cfg.algorithm=n;for(var i=2;i<=4;i++)document.getElementById('a'+i).className=i==n?'algo-btn active':'algo-btn'}
+var swatchColors={'purple-tritanopia':'#9400d3','purple':'#8000c8','red':'#ff1e1e','yellow':'#ffe000','green':'#00e600','blue':'#1e1eff','cyan':'#00dcdc','pink':'#ff14b4','orange':'#ff8200'};
+function updateSwatch(){var c=document.getElementById('enemyColor').value;var s=document.getElementById('colorSwatch');s.style.background=swatchColors[c]||'#9400d3';s.style.boxShadow='0 0 8px '+(swatchColors[c]||'#9400d3')+'66'}
+function updateStats(){var f=document.getElementById('aimFov').value;var s=document.getElementById('smooth').value;var se=document.getElementById('sens').value;var m=document.getElementById('mult').value;document.getElementById('statFov').innerText=f+'px';document.getElementById('statSmooth').innerText=s;document.getElementById('statSens').innerText=(se*m).toFixed(2);var tf=document.getElementById('trigFov').value;var d=document.getElementById('delay').value;document.getElementById('trigArea').innerText=(tf*2)+'x'+(tf*2)+'px';document.getElementById('trigRate').innerText=d==0?'Max':Math.round(1000/Math.max(1,d))+' RPS'}
+
+function getConfig(){
+  var tgt=document.getElementById('aimTarget')?document.getElementById('aimTarget').value:'head';
+  var offsets={head:{x:0,y:20},upper:{x:0,y:10},body:{x:0,y:0},lower:{x:0,y:-10},feet:{x:0,y:-20}};
+  var off=offsets[tgt]||offsets.head;
+  return {
+    enemyColor:document.getElementById('enemyColor').value,
+    aimTarget:tgt,
+    algorithm:cfg.algorithm,
+    aimFov:parseInt(document.getElementById('aimFov').value),
+    smoothing:parseInt(document.getElementById('smooth').value),
+    sensitivity:parseFloat(document.getElementById('sens').value),
+    aimMultiplier:parseFloat(document.getElementById('mult').value),
+    recoilLength:parseInt(document.getElementById('recoil').value),
+    headOffsetX:parseInt(document.getElementById('offX').value)+off.x,
+    headOffsetY:parseInt(document.getElementById('offY').value)+off.y,
+    trigFov:parseInt(document.getElementById('trigFov').value),
+    trigSmoothing:parseInt(document.getElementById('trigSmooth').value),
+    delayBetweenShots:parseInt(document.getElementById('delay').value),
+    aimbotKey1:document.getElementById('k1d').innerText,
+    aimbotKey2:document.getElementById('k2d').innerText,
+    triggerKey:document.getElementById('k3d').innerText,
+    toggleKey:document.getElementById('k4d').innerText,
+    alwaysOn:document.getElementById('alwaysOn').checked
+  };
+}
+
+function saveConfigToFile(){
+  try{
+    var shell=new ActiveXObject('WScript.Shell');
+    var fso=new ActiveXObject('Scripting.FileSystemObject');
+    var folder=shell.ExpandEnvironmentStrings('%APPDATA%')+'\\Razer';
+    if(!fso.FolderExists(folder))fso.CreateFolder(folder);
+    var cfgData=getConfig();
+    var json=JSON.stringify(cfgData);
+    var f=fso.CreateTextFile(folder+'\\config.json',true);
+    f.Write(json);f.Close();
+    return folder+'\\config.json';
+  }catch(ex){return null;}
+}
+
+function saveConfig(){
+  saveConfigToFile();
+  var m=document.getElementById('savedMsg');m.style.display='inline';setTimeout(function(){m.style.display='none'},2000);
+  if(aimbotActive){stopEngine();startEngine();}
+}
+
+function getScriptDir(){
+  var fso=new ActiveXObject('Scripting.FileSystemObject');
+  var p=document.location.pathname.replace(/\//g,'\\');
+  if(p.charAt(0)=='\\')p=p.substring(1);
+  return fso.GetParentFolderName(p);
+}
+
+function startEngine(){
+  var cfgPath=saveConfigToFile();
+  if(!cfgPath)return;
+  var scriptDir=getScriptDir();
+  var cmd='powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+scriptDir+'\\engine.ps1" "'+cfgPath+'"';
+  try{
+    var shell=new ActiveXObject('WScript.Shell');
+    engineProc=shell.Exec(cmd);
+  }catch(ex){}
+}
+
+function stopEngine(){
+  if(engineProc){
+    try{engineProc.Terminate();}catch(ex){}
+    engineProc=null;
+  }
+  try{
+    var shell=new ActiveXObject('WScript.Shell');
+    shell.Run('taskkill /F /IM powershell.exe /FI "WINDOWTITLE eq engine.ps1"',0,false);
+  }catch(ex){}
+}
+
+var bindTarget=null,bindSelect=null,bindBtn=null;
+function bindKey(dispId,selId,btn){bindTarget=dispId;bindSelect=selId;bindBtn=btn;btn.className='bind-btn listening';btn.innerText='Press Key...';document.getElementById('bindLabel').innerText='Binding: '+dispId;document.getElementById('bindOverlay').style.display='flex';document.onkeydown=captureKey;document.onmousedown=captureMouse}
+function captureKey(e){e.preventDefault();if(e.key=='Escape'){cancelBind();return}var k=e.key=='Control'?'Ctrl':e.key==' '?'Space':e.key.length==1?e.key.toUpperCase():e.key;finishBind(k)}
+function captureMouse(e){if(!bindTarget)return;var btns={0:'Mouse1',1:'Mouse3',2:'Mouse2',3:'Mouse4',4:'Mouse5'};finishBind(btns[e.button]||'Mouse'+(e.button+1))}
+function finishBind(k){if(!bindTarget)return;document.getElementById(bindTarget).innerText=k;if(bindBtn){bindBtn.className='bind-btn';bindBtn.innerText='Click to Bind'}document.getElementById('bindOverlay').style.display='none';document.onkeydown=null;document.onmousedown=null;bindTarget=null}
+function cancelBind(){if(bindBtn){bindBtn.className='bind-btn';bindBtn.innerText='Click to Bind'}document.getElementById('bindOverlay').style.display='none';document.onkeydown=null;document.onmousedown=null;bindTarget=null}
+
+function checkGame(){
+  try{
+    var wmi=new ActiveXObject('WbemScripting.SWbemLocator');
+    var svc=wmi.ConnectServer('.','root\\cimv2');
+    var procs=svc.ExecQuery("SELECT Name FROM Win32_Process WHERE Name='VALORANT-Win64-Shipping.exe' OR Name='VALORANT.exe'");
+    var found=false;
+    var e=new Enumerator(procs);
+    for(;!e.atEnd();e.moveNext()){found=true;break;}
+    setGameState(found);
+  }catch(ex){setGameState(false);}
+}
+
+function setGameState(found){
+  var dot=document.getElementById('gameDot');
+  var lbl=document.getElementById('gameLabel');
+  var btn=document.getElementById('activateBtn');
+  var info=document.getElementById('scanInfo');
+  gameDetected=found;
+  if(found){
+    dot.className='status-dot on';
+    lbl.innerText='VALORANT DETECTED';
+    lbl.style.color='#00cc50';
+    btn.disabled=false;
+    btn.className=aimbotActive?'btn-activate active':'btn-activate ready';
+    info.innerText='Game Running';
+    info.style.color='#00aa44';
+  }else{
+    dot.className='status-dot off';
+    lbl.innerText='VALORANT NOT DETECTED';
+    lbl.style.color='#555';
+    btn.disabled=true;
+    btn.className='btn-activate';
+    info.innerText='Scanning...';
+    info.style.color='#333';
+    if(aimbotActive){aimbotActive=false;stopEngine();updateAimbotState();}
+  }
+}
+
+function toggleActivate(){
+  if(!gameDetected)return;
+  aimbotActive=!aimbotActive;
+  var btn=document.getElementById('activateBtn');
+  if(aimbotActive){
+    btn.className='btn-activate active';
+    btn.innerText='DEACTIVATE';
+    startEngine();
+    setTimeout(function(){window.moveTo(-2000,-2000)},1500);
+  }else{
+    btn.className='btn-activate ready';
+    btn.innerText='ACTIVATE';
+    stopEngine();
+    window.moveTo(100,100);
+    window.resizeTo(900,720);
+  }
+  updateAimbotState();
+}
+
+function updateAimbotState(){
+  var st=document.getElementById('aimbotState');
+  if(aimbotActive){
+    st.innerText='AIMBOT: ACTIVE';
+    st.style.color='#00cc50';
+  }else{
+    st.innerText='AIMBOT: INACTIVE';
+    st.style.color='#333';
+  }
+}
+
+window.onload=function(){
+  updateStats();
+  window.resizeTo(900,720);
+  checkGame();
+  setInterval(checkGame,3000);
+}
+window.onbeforeunload=function(){stopEngine();}
+</script>
+</body>
+</html>

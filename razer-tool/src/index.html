@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Razer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">⚡ RAZER</div>
+    <div class="status-row">
+      <span class="dot" id="driverDot"></span>
+      <span id="driverLabel">Driver: ---</span>
+      <span class="sep">|</span>
+      <span class="dot" id="aimDot"></span>
+      <span id="aimLabel">Aimbot: OFF</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="aim">Aimbot</button>
+    <button class="tab" data-tab="trigger">Trigger</button>
+    <button class="tab" data-tab="config">Config</button>
+    <button class="tab" data-tab="other">Other</button>
+  </div>
+
+  <!-- Tab: Aimbot -->
+  <div class="panel active" id="aim">
+    <div class="row"><label>FOV</label><input type="range" id="fov" min="5" max="120" value="35"><span class="val" id="fovV">35</span></div>
+    <div class="row"><label>Smooth</label><input type="range" id="smooth" min="1" max="20" value="5" step="0.5"><span class="val" id="smoothV">5</span></div>
+    <div class="row"><label>Speed</label><input type="range" id="speed" min="1" max="15" value="4" step="0.5"><span class="val" id="speedV">4</span></div>
+    <div class="row"><label>Sensitivity</label><input type="range" id="sens" min="0.1" max="3" value="1" step="0.1"><span class="val" id="sensV">1</span></div>
+    <div class="row"><label>Y Offset</label><input type="range" id="yoff" min="0" max="20" value="4"><span class="val" id="yoffV">4</span></div>
+    <div class="row"><label>X Offset</label><input type="range" id="xoff" min="-10" max="10" value="1"><span class="val" id="xoffV">1</span></div>
+    <div class="row"><label>Enemy Color</label>
+      <select id="color">
+        <option value="purple-tritanopia" selected>Purple (Tritanopia)</option>
+        <option value="purple">Purple</option>
+        <option value="yellow">Yellow</option>
+        <option value="red">Red</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tab: Trigger -->
+  <div class="panel" id="trigger">
+    <div class="row"><label>Trigger FOV X</label><input type="range" id="trigFovX" min="1" max="20" value="5"><span class="val" id="trigFovXV">5</span></div>
+    <div class="row"><label>Trigger FOV Y</label><input type="range" id="trigFovY" min="1" max="20" value="5"><span class="val" id="trigFovYV">5</span></div>
+    <div class="row"><label>Trigger Delay (ms)</label><input type="range" id="trigDelay" min="0" max="200" value="10"><span class="val" id="trigDelayV">10</span></div>
+    <div class="row">
+      <label>Trigger Key</label>
+      <button class="bind-btn" id="trigKeyBtn" onclick="startBind('trigKey')">Mouse5</button>
+      <input type="hidden" id="trigKey" value="6">
+    </div>
+    <div class="row"><label>Trigger Enabled</label><label class="switch"><input type="checkbox" id="trigOn"><span class="slider"></span></label></div>
+  </div>
+
+  <!-- Tab: Config -->
+  <div class="panel" id="config">
+    <div class="row">
+      <label>Aim Key</label>
+      <button class="bind-btn" id="aimKeyBtn" onclick="startBind('aimKey')">Alt</button>
+      <input type="hidden" id="aimKey" value="18">
+    </div>
+    <div class="row"><label>Always On</label><label class="switch"><input type="checkbox" id="alwaysOn"><span class="slider"></span></label></div>
+    <div class="sep-line"></div>
+    <div class="row btn-row">
+      <button class="btn-action" onclick="saveConfig()">💾 Save Config</button>
+      <button class="btn-action" onclick="loadConfig()">📂 Load Config</button>
+    </div>
+    <div class="row btn-row">
+      <button class="btn-action" onclick="resetConfig()">🔄 Reset Default</button>
+    </div>
+    <p class="hint" id="saveMsg"></p>
+  </div>
+
+  <!-- Tab: Other -->
+  <div class="panel" id="other">
+    <div class="info-card">
+      <p><strong>Driver:</strong> <span id="drvInfo">---</span></p>
+      <p><strong>Screen:</strong> <span id="scrInfo">---</span></p>
+      <p><strong>Status:</strong> <span id="statusInfo">Idle</span></p>
+    </div>
+    <div class="row"><label>FOV Circle</label><label class="switch"><input type="checkbox" id="showFov" checked><span class="slider"></span></label></div>
+    <p class="hint">Nhấn ESC để dừng khẩn cấp.</p>
+    <p class="hint ver">v1.0.0 — Razer Color Aimbot</p>
+  </div>
+
+  <!-- Activate Button -->
+  <div class="footer">
+    <button class="btn-activate" id="activateBtn" onclick="toggleActivate()">ACTIVATE</button>
+  </div>
+
+  <!-- Bind Overlay -->
+  <div class="overlay" id="bindOverlay">
+    <div class="overlay-box">
+      <p id="bindLabel">Press any key or mouse button...</p>
+      <button class="btn-cancel" onclick="cancelBind()">Cancel</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
