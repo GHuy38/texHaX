@@ -1,15 +1,20 @@
-# 📖 Hướng Dẫn Sử Dụng Razer Tool v1.0
+# 📖 Razer Tool - Hướng Dẫn Sử Dụng
+
+> ⚠️ **Disclaimer**: Công cụ này chỉ dành cho mục đích nghiên cứu và học tập. Sử dụng trong các trò chơi trực tuyến có thể vi phạm điều khoản dịch vụ.
 
 ## 1. Cách Khởi Chạy Ứng Dụng
 
 ### Bước 1: Mở Terminal (PowerShell)
 Nhấn `Win + R` → gõ `powershell` → Enter
 
-### Bước 2: Chạy lệnh
+### Bước 2: Điều hướng tới thư mục dự án
 ```powershell
-cd C:\Users\GiaHuy\Downloads\testhax\razer-tool
+cd [đường_dẫn_tới_razer-tool]
 npm run tauri dev
 ```
+> **Thay `[đường_dẫn_tới_razer-tool]` bằng vị trí thư mục razer-tool trên máy của bạn**
+> 
+> Ví dụ: `cd D:\Projects\razer-tool`
 
 ### Bước 3: Chờ build
 - Lần đầu: ~1-2 phút (compile Rust)
@@ -17,13 +22,23 @@ npm run tauri dev
 - Khi thấy dòng `Running target\debug\razer-tool.exe` → **App đã mở**
 
 > [!TIP]
-> Nếu muốn tạo shortcut nhanh: Sau khi build xong, file `.exe` nằm tại
-> `C:\Users\GiaHuy\Downloads\testhax\razer-tool\src-tauri\target\debug\razer-tool.exe`
-> Nhưng nhớ copy `rzctl.dll` vào cùng thư mục với `.exe`
+> **Tạo shortcut nhanh:**
+> 1. Sau khi build xong, tìm file `.exe` tại: `[project-root]\src-tauri\target\debug\razer-tool.exe`
+> 2. Copy file `rzctl.dll` vào cùng thư mục với `.exe`
+> 3. Tạo shortcut trỏ tới file `.exe` này
 
 ---
 
-## 2. Giao Diện Ứng Dụng
+## 2. Yêu Cầu Hệ Thống
+
+- **Windows 10/11** (64-bit)
+- **Razer Synapse 3** cài đặt
+- **Node.js 16+** và **npm**
+- **Rust** (sẽ được cài tự động qua rustup nếu cần)
+
+---
+
+## 3. Giao Diện Ứng Dụng
 
 ### Header (Thanh trên cùng)
 | Phần tử | Ý nghĩa |
@@ -35,7 +50,7 @@ npm run tauri dev
 
 ---
 
-## 3. Các Tab & Chức Năng
+## 4. Các Tab & Chức Năng
 
 ### Tab 1: Aimbot ⚡
 | Slider | Chức năng | Range | Giá trị legit |
@@ -76,7 +91,7 @@ npm run tauri dev
 
 ---
 
-## 4. Cách Sử Dụng Trong Game
+## 5. Cách Sử Dụng Trong Game
 
 ### Bước 1: Chuẩn bị
 1. Mở **Razer Synapse** (để driver hoạt động)
@@ -105,7 +120,7 @@ npm run tauri dev
 
 ---
 
-## 5. Config Legit Nhất (Khuyến Nghị)
+## 6. Config Khuyến Nghị
 
 > [!IMPORTANT]
 > Config này được thiết kế để trông giống người thật nhất có thể, giảm thiểu detect.
@@ -154,7 +169,7 @@ Enemy Color: Purple (Tritanopia)
 
 ---
 
-## 6. Giải Thích Các Thông Số
+## 7. Giải Thích Các Thông Số
 
 ### FOV (Field of View)
 ```
@@ -182,7 +197,7 @@ Y Offset = 8+:  Aim cao hơn đầu (sai)
 
 ---
 
-## 7. Lưu Ý Quan Trọng
+## 8. Lưu Ý Quan Trọng
 
 > [!CAUTION]
 > - **Luôn tắt tool trước khi đóng game** để tránh process leak
@@ -194,7 +209,7 @@ Y Offset = 8+:  Aim cao hơn đầu (sai)
 
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 | Vấn đề | Giải pháp |
 |--------|-----------|
